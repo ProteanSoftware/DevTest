@@ -9,5 +9,11 @@ namespace DeveloperTest.Models
         public string Engineer { get; set; }
 
         public DateTime When { get; set; }
+
+        public string CustName { get; set; }
+
+        public string CustType { get; set; }
+
+        public int CustID { get; set; }
     }
 }
