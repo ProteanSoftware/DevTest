@@ -3,6 +3,7 @@ using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Database;
 using DeveloperTest.Database.Models;
 using DeveloperTest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperTest.Business
 {
@@ -17,22 +18,37 @@ namespace DeveloperTest.Business
 
         public JobModel[] GetJobs()
         {
-            return context.Jobs.Select(x => new JobModel
-            {
-                JobId = x.JobId,
-                Engineer = x.Engineer,
-                When = x.When
-            }).ToArray();
+            var jbs = (from j in context.Jobs
+                     from c in context.Customers
+                        .Where(c => c.CustomerId == j.CustomerId)
+                        .DefaultIfEmpty()
+                     select new JobModel
+                        {
+                            JobId = j.JobId,
+                            Engineer = j.Engineer,
+                            When = j.When,
+                            CustName = c.CustomerName
+                        }).ToArray();
+
+            return jbs;
         }
 
         public JobModel GetJob(int jobId)
         {
-            return context.Jobs.Where(x => x.JobId == jobId).Select(x => new JobModel
-            {
-                JobId = x.JobId,
-                Engineer = x.Engineer,
-                When = x.When
-            }).SingleOrDefault();
+            var jb = (from j in context.Jobs.Where(x => x.JobId == jobId)
+                      from c in context.Customers
+                          .Where(c => c.CustomerId == j.CustomerId)
+                          .DefaultIfEmpty()
+                       select new JobModel
+                       {
+                           JobId = j.JobId,
+                           Engineer = j.Engineer,
+                           When = j.When,
+                           CustName = c.CustomerName,
+                             CustType = c.Type
+                       }).SingleOrDefault();
+
+            return jb;
         }
 
         public JobModel CreateJob(BaseJobModel model)
@@ -40,7 +56,8 @@ namespace DeveloperTest.Business
             var addedJob = context.Jobs.Add(new Job
             {
                 Engineer = model.Engineer,
-                When = model.When
+                When = model.When,
+                 CustomerId = model.CustID
             });
 
             context.SaveChanges();

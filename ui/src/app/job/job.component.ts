@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { EngineerService } from '../services/engineer.service';
 import { JobService } from '../services/job.service';
 import { JobModel } from '../models/job.model';
+import { CustomerService } from '../services/customer.service';
+import { CustomerModel } from '../models/customer.model';
 
 @Component({
   selector: 'app-job',
@@ -13,20 +15,27 @@ export class JobComponent implements OnInit {
 
   public engineers: string[] = [];
 
+  public customers: CustomerModel[] = [];
+
   public jobs: JobModel[] = [];
 
   public newJob: JobModel = {
     jobId: null,
     engineer: null,
-    when: null
+    when: null,
+    custName: null,
+    custType: null,
+    custID: null,
   };
 
   constructor(
     private engineerService: EngineerService,
+    private customerService: CustomerService,
     private jobService: JobService) { }
 
   ngOnInit() {
     this.engineerService.GetEngineers().subscribe(engineers => this.engineers = engineers);
+    this.customerService.GetCustomers().subscribe(customers => this.customers = customers);
     this.jobService.GetJobs().subscribe(jobs => this.jobs = jobs);
   }
 
@@ -36,6 +45,8 @@ export class JobComponent implements OnInit {
     } else {
       this.jobService.CreateJob(this.newJob).then(() => {
         this.jobService.GetJobs().subscribe(jobs => this.jobs = jobs);
+      }).catch(error => {
+        alert(error.error);
       });
     }
   }
