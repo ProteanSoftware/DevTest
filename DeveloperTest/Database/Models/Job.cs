@@ -8,6 +8,10 @@ namespace DeveloperTest.Database.Models
 
         public string Engineer { get; set; }
 
+        public int? CustomerId { get; set; }
+
+        public Customer Customer { get; set; }
+
         public DateTime When { get; set; }
     }
 }
