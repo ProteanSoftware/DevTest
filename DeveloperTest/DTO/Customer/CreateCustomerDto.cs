@@ -11,6 +11,6 @@ public record CreateCustomerDto
 
     [Required(ErrorMessage = $"{nameof(TypeId)} is a required field.")]
     [Range(1, byte.MaxValue, ErrorMessage = $"{nameof(TypeId)} contain incorrect value")]
-    public CustomerTypeId TypeId { get; init; }
+    public byte TypeId { get; init; }
 }
 

@@ -30,7 +30,7 @@ public class CustomerController : ControllerBase
         Ok(await _customerService.GetCustomerTypesAsync());
 
     [HttpPost]
-    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerDto customer)
+    public async Task<IActionResult> CreateCustomer([FromBody]CreateCustomerDto customer)
     {
         if (customer is null)
             return BadRequest($"{nameof(CreateCustomerDto)} object is null.");
@@ -42,6 +42,4 @@ public class CustomerController : ControllerBase
 
         return CreatedAtRoute("Customer", new {createdCustomer.Id}, createdCustomer);
     }
-    
-
 }
