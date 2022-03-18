@@ -1,30 +1,30 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using DeveloperTest.Business.Interfaces;
-using DeveloperTest.Models;
+using DeveloperTest.DTO.Job;
 
 namespace DeveloperTest.Controllers
 {
     [ApiController, Route("[controller]")]
     public class JobController : ControllerBase
     {
-        private readonly IJobService jobService;
+        private readonly IJobService _jobService;
 
         public JobController(IJobService jobService)
         {
-            this.jobService = jobService;
+            _jobService = jobService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(jobService.GetJobs());
+            return Ok(_jobService.GetJobsAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "Job")]
         public IActionResult Get(int id)
         {
-            var job = jobService.GetJob(id);
+            var job = _jobService.GetJobAsync(id);
 
             if (job == null)
             {
@@ -35,16 +35,16 @@ namespace DeveloperTest.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BaseJobModel model)
+        public IActionResult Create(CreateJobDto model)
         {
             if (model.When.Date < DateTime.Now.Date)
             {
                 return BadRequest("Date cannot be in the past");
             }
 
-            var job = jobService.CreateJob(model);
+            var createdJob = _jobService.CreateJobAsync(model);
 
-            return Created($"job/{job.JobId}", job);
+            return CreatedAtRoute("Job", new {createdJob.Id}, createdJob);
         }
     }
 }

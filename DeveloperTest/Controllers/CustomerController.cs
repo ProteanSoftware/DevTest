@@ -2,6 +2,7 @@
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.DTO.Customer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperTest.Controllers;
 
@@ -31,6 +32,12 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerDto customer)
     {
+        if (customer is null)
+            return BadRequest($"{nameof(CreateCustomerDto)} object is null.");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+        
         var createdCustomer = await _customerService.CreateCustomerAsync(customer);
 
         return CreatedAtRoute("Customer", new {createdCustomer.Id}, createdCustomer);

@@ -34,8 +34,7 @@ public class CustomerService : ICustomerService
         if (customer is null)
             throw new CustomerNotFoundException(customerId);
             
-        return _mapper.Map<CustomerDto>(
-            await _dbContext.Customers.SingleOrDefaultAsync(x => x.Id == customerId));
+        return _mapper.Map<CustomerDto>(customer);
     }
 
     public async Task<IEnumerable<CustomerTypeDto>> GetCustomerTypesAsync() =>

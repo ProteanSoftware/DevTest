@@ -1,5 +1,4 @@
-﻿using System;
-using DeveloperTest.Exceptions.Base;
+﻿using DeveloperTest.Exceptions.Base;
 
 namespace DeveloperTest.Exceptions;
 
