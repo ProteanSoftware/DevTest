@@ -2,7 +2,6 @@
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.DTO.Customer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperTest.Controllers;
 

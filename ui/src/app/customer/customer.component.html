@@ -1,9 +1,10 @@
+<h2>New customer</h2>
 <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
   <div>
     <label for="name">Customer Name</label>
     <input type="text" formControlName="name" id="name"/>
-    <em *ngIf="validateControl('name') && hasError('name', 'required')">Name is required</em>
-    <em *ngIf="validateControl('name') && hasError('name', 'minlength')">Name must be minimum 5 characters long. </em>
+    <small *ngIf="validateControl('name') && hasError('name', 'required')">Name is required</small>
+    <small *ngIf="validateControl('name') && hasError('name', 'minlength')">Name must be minimum 5 characters long. </small>
   </div>
   <div>
     <label for="customerType">Customer Type</label>
@@ -12,11 +13,12 @@
       (change)="changeType($event)"
       formControlName="customerType"
     >
+      <option value="" selected>Select customer</option>
       <option *ngFor="let type of customerTypes" [value]="type.id">
         {{ type.name }}
       </option>
     </select>
-    <em *ngIf="validateControl('customerType') && hasError('customerType', 'required')">Type is required</em>
+    <small *ngIf="validateControl('customerType') && hasError('customerType', 'required')">Type is required</small>
   </div>
   <button type="submit" class="btn btn-info" [disabled]="!customerForm.valid">Save</button>
 </form>

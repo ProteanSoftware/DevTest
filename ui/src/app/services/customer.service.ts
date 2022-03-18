@@ -9,25 +9,24 @@ import {CreateCustomerDto, CustomerDto, CustomerTypes} from "../models/customer.
 })
 export class CustomerService {
 
-  public readonly CUSTOMERS: string = '/customers';
+  public readonly customers: string = '/customers';
   public apiUrl: string = environment.urlAddress;
 
-  constructor(
-    private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
   public GetCustomers(): Observable<CustomerDto[]> {
-    return this.httpClient.get<CustomerDto[]>(this.apiUrl + this.CUSTOMERS);
+    return this.httpClient.get<CustomerDto[]>(this.apiUrl + this.customers);
   }
 
   public GetCustomer(customerId: number): Observable<CustomerDto> {
-    return this.httpClient.get<CustomerDto>(this.apiUrl + this.CUSTOMERS + '/' + customerId);
+    return this.httpClient.get<CustomerDto>(this.apiUrl + this.customers + '/' + customerId);
   }
 
   public GetCustomerTypes(): Observable<CustomerTypes[]> {
-    return this.httpClient.get<CustomerTypes[]>(this.apiUrl + this.CUSTOMERS + '/types');
+    return this.httpClient.get<CustomerTypes[]>(this.apiUrl + this.customers + '/types');
   }
 
   public CreateCustomer(customer: CreateCustomerDto): Observable<CustomerDto> {
-    return this.httpClient.post<CustomerDto>(this.apiUrl + this.CUSTOMERS, customer);
+    return this.httpClient.post<CustomerDto>(this.apiUrl + this.customers, customer);
   }
 }

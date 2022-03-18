@@ -11,6 +11,7 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomerTypePipe } from "./utils/pipes/customer-type.pipe";
 import { CustomerDetailsComponent } from './customer-details/customer-details.component';
+import { DatePipe } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { CustomerDetailsComponent } from './customer-details/customer-details.co
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
