@@ -1,13 +1,15 @@
-﻿using DeveloperTest.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using DeveloperTest.DTO.Job;
 
 namespace DeveloperTest.Business.Interfaces
 {
     public interface IJobService
     {
-        JobModel[] GetJobs();
+        Task<IEnumerable<JobDto>> GetJobsAsync();
 
-        JobModel GetJob(int jobId);
+        Task<JobDto> GetJobAsync(int jobId);
 
-        JobModel CreateJob(BaseJobModel model);
+        Task<JobDto> CreateJobAsync(CreateJobDto job);
     }
 }

@@ -1,56 +1,55 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Database;
 using DeveloperTest.Database.Models;
-using DeveloperTest.Models;
+using DeveloperTest.DTO.Job;
+using DeveloperTest.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperTest.Business
 {
     public class JobService : IJobService
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public JobService(ApplicationDbContext context)
+        public JobService(
+            ApplicationDbContext dbContext,
+            IMapper mapper)
         {
-            this.context = context;
+            _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public JobModel[] GetJobs()
+        public async Task<IEnumerable<JobDto>> GetJobsAsync() =>
+            _mapper.Map<IEnumerable<JobDto>>(
+                await _dbContext.Jobs
+                    .Include(x => x.Customer)
+                    .ToListAsync());
+
+        public async Task<JobDto> GetJobAsync(int jobId)
         {
-            return context.Jobs.Select(x => new JobModel
-            {
-                JobId = x.JobId,
-                Engineer = x.Engineer,
-                When = x.When
-            }).ToArray();
+            var job = await _dbContext.Jobs
+                .Include(x => x.Customer)
+                .SingleOrDefaultAsync(x => x.JobId == jobId);
+
+            if (job is null)
+                throw new JobNotFoundException(jobId);
+
+            return _mapper.Map<JobDto>(job);
         }
 
-        public JobModel GetJob(int jobId)
+        public async Task<JobDto> CreateJobAsync(CreateJobDto job)
         {
-            return context.Jobs.Where(x => x.JobId == jobId).Select(x => new JobModel
-            {
-                JobId = x.JobId,
-                Engineer = x.Engineer,
-                When = x.When
-            }).SingleOrDefault();
-        }
+            var addedJob = _mapper.Map<Job>(job);
 
-        public JobModel CreateJob(BaseJobModel model)
-        {
-            var addedJob = context.Jobs.Add(new Job
-            {
-                Engineer = model.Engineer,
-                When = model.When
-            });
+            _dbContext.Jobs.Add(addedJob);
 
-            context.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
-            return new JobModel
-            {
-                JobId = addedJob.Entity.JobId,
-                Engineer = addedJob.Entity.Engineer,
-                When = addedJob.Entity.When
-            };
+            return _mapper.Map<JobDto>(addedJob);
         }
     }
 }

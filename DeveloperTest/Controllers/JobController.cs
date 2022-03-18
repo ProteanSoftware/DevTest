@@ -1,50 +1,42 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DeveloperTest.Business.Interfaces;
-using DeveloperTest.Models;
+using DeveloperTest.DTO.Job;
 
 namespace DeveloperTest.Controllers
 {
-    [ApiController, Route("[controller]")]
+    [Route("api/jobs")]
+    [ApiController]
     public class JobController : ControllerBase
     {
-        private readonly IJobService jobService;
+        private readonly IJobService _jobService;
 
         public JobController(IJobService jobService)
         {
-            this.jobService = jobService;
+            _jobService = jobService;
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(jobService.GetJobs());
-        }
+        public async Task<IActionResult> GetJobs() => 
+            Ok(await _jobService.GetJobsAsync());
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var job = jobService.GetJob(id);
+        [HttpGet("{jobId:int}", Name = nameof(GetJob))]
+        public async Task<IActionResult> GetJob(int jobId) => 
+             Ok(await _jobService.GetJobAsync(jobId));
 
-            if (job == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(job);
-        }
 
         [HttpPost]
-        public IActionResult Create(BaseJobModel model)
+        public async Task<IActionResult> Create([FromBody] CreateJobDto job)
         {
-            if (model.When.Date < DateTime.Now.Date)
+            if (job.When.Date < DateTime.Now.Date)
             {
                 return BadRequest("Date cannot be in the past");
             }
 
-            var job = jobService.CreateJob(model);
+            var createdJob = await _jobService.CreateJobAsync(job);
 
-            return Created($"job/{job.JobId}", job);
+            return CreatedAtRoute(nameof(GetJob), new {createdJob.JobId}, createdJob);
         }
     }
 }

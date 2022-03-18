@@ -1,15 +1,40 @@
 <h2>New job form</h2>
-<form #jobForm="ngForm" (ngSubmit)="createJob(jobForm)">
-  <label for="engineer">Engineer</label>
-  <select name="engineer" required #engineer="ngModel" ngModel placeholder="Please select" [(ngModel)]="newJob.engineer">
-    <option [ngValue]="undefined" selected>Please select</option>
-    <option *ngFor="let engineer of engineers">{{engineer}}</option>
-  </select>
-  <small *ngIf="engineer.invalid">Please select an engineer</small>
-  <label for="when">When</label>
-  <input type="date" name="when" ngModel required #when="ngModel" [(ngModel)]="newJob.when" />
-  <small *ngIf="when.invalid">Please select a valid date</small>
-  <button type="submit" [disabled]="jobForm.invalid">Add Job</button>
+
+<form [formGroup]="jobFormGroup" (ngSubmit)="onSubmit(jobFormGroup.value)">
+  <div>
+    <label for="engineer">Engineer</label>
+    <select
+      id="engineer"
+      (change)="changeEngineer($event)"
+      formControlName="engineer"
+    >
+      <option value="" selected>Select engineer</option>
+      <option *ngFor="let engineer of engineers">
+        {{ engineer }}
+      </option>
+    </select>
+    <small *ngIf="validateControl('engineer') && hasError('engineer', 'required')">Please select an engineer.</small>
+  </div>
+  <div>
+    <label for="customer">Customer</label>
+    <select
+      id="customer"
+      (change)="changeCustomer($event)"
+      formControlName="customer"
+    >
+      <option value="" selected>Select customer</option>
+      <option *ngFor="let customer of customers" [value]="customer.id">
+        {{ customer.name }}
+      </option>
+    </select>
+    <small *ngIf="validateControl('customer') && hasError('customer', 'required')">Please select an customer.</small>
+  </div>
+  <div>
+    <label for="when">When</label>
+    <input id="when" type="date" formControlName="dateWhen" value="" [min]="todayDate">
+    <small *ngIf="validateControl('dateWhen') && hasError('dateWhen', 'required')">Please select a date.</small>
+  </div>
+  <button type="submit" class="btn btn-info" [disabled]="!jobFormGroup.valid">Save</button>
 </form>
 
 <h2>Jobs list</h2>
@@ -18,6 +43,7 @@
     <tr>
       <th>Engineer</th>
       <th>When</th>
+      <th>Customer</th>
       <th></th>
     </tr>
   </thead>
@@ -25,6 +51,7 @@
     <tr *ngFor="let job of jobs">
       <td>{{job.engineer}}</td>
       <td>{{job.when | date:'shortDate'}}</td>
+      <td>{{job.customer?.name || 'Unknown'}}</td>
       <td>
         <a [routerLink]="['/job', job.jobId]">Open</a>
       </td>

@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DeveloperTest.Business;
-using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Database;
+using DeveloperTest.Extensions;
+using DeveloperTest.Middleware;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DeveloperTest
 {
@@ -27,7 +28,14 @@ namespace DeveloperTest
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IJobService, JobService>();
+            services.ConfigureBusinessServices();
+
+            services.AddAutoMapper(typeof(Program));
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +45,8 @@ namespace DeveloperTest
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.ConfigureExceptionHandler();
 
             app.UseHttpsRedirection();
 
