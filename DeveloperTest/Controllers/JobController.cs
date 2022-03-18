@@ -6,7 +6,8 @@ using DeveloperTest.DTO.Job;
 
 namespace DeveloperTest.Controllers
 {
-    [ApiController, Route("[controller]")]
+    [Route("api/jobs")]
+    [ApiController]
     public class JobController : ControllerBase
     {
         private readonly IJobService _jobService;
@@ -17,35 +18,25 @@ namespace DeveloperTest.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            return Ok(await _jobService.GetJobsAsync());
-        }
+        public async Task<IActionResult> GetJobs() => 
+            Ok(await _jobService.GetJobsAsync());
 
-        [HttpGet("{id}", Name = "Job")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var job = await _jobService.GetJobAsync(id);
+        [HttpGet("{jobId:int}", Name = nameof(GetJob))]
+        public async Task<IActionResult> GetJob(int jobId) => 
+             Ok(await _jobService.GetJobAsync(jobId));
 
-            if (job == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(job);
-        }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateJobDto model)
+        public async Task<IActionResult> Create([FromBody] CreateJobDto job)
         {
-            if (model.When.Date < DateTime.Now.Date)
+            if (job.When.Date < DateTime.Now.Date)
             {
                 return BadRequest("Date cannot be in the past");
             }
 
-            var createdJob = await _jobService.CreateJobAsync(model);
+            var createdJob = await _jobService.CreateJobAsync(job);
 
-            return CreatedAtRoute("Job", new {createdJob.JobId}, createdJob);
+            return CreatedAtRoute(nameof(GetJob), new {createdJob.JobId}, createdJob);
         }
     }
 }

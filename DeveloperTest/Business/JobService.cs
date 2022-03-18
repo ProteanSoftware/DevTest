@@ -25,11 +25,15 @@ namespace DeveloperTest.Business
 
         public async Task<IEnumerable<JobDto>> GetJobsAsync() =>
             _mapper.Map<IEnumerable<JobDto>>(
-                await _dbContext.Jobs.ToListAsync());
+                await _dbContext.Jobs
+                    .Include(x => x.Customer)
+                    .ToListAsync());
 
         public async Task<JobDto> GetJobAsync(int jobId)
         {
-            var job = await _dbContext.Jobs.SingleOrDefaultAsync(x => x.JobId == jobId);
+            var job = await _dbContext.Jobs
+                .Include(x => x.Customer)
+                .SingleOrDefaultAsync(x => x.JobId == jobId);
 
             if (job is null)
                 throw new JobNotFoundException(jobId);
