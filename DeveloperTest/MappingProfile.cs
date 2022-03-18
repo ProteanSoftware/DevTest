@@ -16,7 +16,7 @@ public class MappingProfile : Profile
                 opt => opt.MapFrom(x => (byte)x.TypeId));
         
         CreateMap<CustomerType, CustomerTypeDto>();
-        
+
         CreateMap<Job, JobDto>();
         CreateMap<CreateJobDto, Job>();
     }

@@ -24,7 +24,7 @@ namespace DeveloperTest.Business
         }
 
         public async Task<IEnumerable<JobDto>> GetJobsAsync() =>
-            _mapper.Map<JobDto[]>(
+            _mapper.Map<IEnumerable<JobDto>>(
                 await _dbContext.Jobs.ToListAsync());
 
         public async Task<JobDto> GetJobAsync(int jobId)
