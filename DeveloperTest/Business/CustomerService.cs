@@ -3,6 +3,9 @@ using DeveloperTest.Database;
 using DeveloperTest.Database.Models;
 using DeveloperTest.Mappers;
 using DeveloperTest.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DeveloperTest.Business
@@ -16,12 +19,17 @@ namespace DeveloperTest.Business
             this.context = context;
         }
 
-        public async Task<CustomerModel> CreateCustomerAsync(BaseCustomerModel model)
+        public async ValueTask<CustomerModel> CreateCustomerAsync(BaseCustomerModel model)
         {
+            if (!Enum.TryParse(value: model.Type, ignoreCase: true, out CustomerType result))
+            {
+                throw new ArgumentException($"{nameof(CustomerType)} must be valid.");
+            }
+
             var customer = context.Customers.Add(new Customer
             {
                 Name = model.Name,
-                Type = model.Type
+                Type = result
             });
 
             await context.SaveChangesAsync();
@@ -37,9 +45,21 @@ namespace DeveloperTest.Business
             return customer?.ToModel();
         }
 
-        public Task<CustomerModel[]> GetCustomersAsync()
+        public async Task<CustomerModel[]> GetCustomersAsync()
         {
-            throw new System.NotImplementedException();
+            return await context.Customers
+                .Select(customer => new CustomerModel
+                { 
+                    CustomerId = customer.CustomerId,
+                    Name = customer.Name,
+                    Type = customer.Type
+                })
+                .ToArrayAsync();
+        }
+
+        public string[] GetTypes()
+        {
+            return typeof(CustomerType).GetEnumNames();
         }
     }
 }

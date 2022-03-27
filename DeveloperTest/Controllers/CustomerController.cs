@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Models;
 using System.Threading.Tasks;
+using DeveloperTest.Database.Models;
 
 namespace DeveloperTest.Controllers
 {
@@ -44,9 +45,20 @@ namespace DeveloperTest.Controllers
                 return BadRequest($"Customer name cannot have less than {minCustomerNameLength} characters");
             }
 
+            if (!Enum.TryParse(value: model.Type, ignoreCase: true, out CustomerType result))
+            {
+                return BadRequest($"Customer type must be chosen.");
+            }
+
             var customer = await customerService.CreateCustomerAsync(model);
 
             return Created($"customer/{customer.CustomerId}", customer);
+        }
+
+        [HttpGet("types")]
+        public IActionResult GetTypes()
+        {
+            return Ok(customerService.GetTypes());
         }
     }
 }

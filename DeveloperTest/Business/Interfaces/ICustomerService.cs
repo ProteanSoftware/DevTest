@@ -5,8 +5,9 @@ namespace DeveloperTest.Business.Interfaces
 {
     public interface ICustomerService
     {
-        public Task<CustomerModel[]> GetCustomersAsync();
-        public Task<CustomerModel> GetCustomerAsync(int id);
-        public Task<CustomerModel> CreateCustomerAsync(BaseCustomerModel model);
+        Task<CustomerModel[]> GetCustomersAsync();
+        Task<CustomerModel> GetCustomerAsync(int id);
+        ValueTask<CustomerModel> CreateCustomerAsync(BaseCustomerModel model);
+        string[] GetTypes();
     }
 }
