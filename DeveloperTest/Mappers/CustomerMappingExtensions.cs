@@ -15,15 +15,6 @@ namespace DeveloperTest.Mappers
             };
         }
 
-        public static BaseCustomerModel ToBaseCustomerModel(this CustomerModel source)
-        {
-            return new BaseCustomerModel()
-            {
-                Name = source.Name,
-                Type = source.Type
-            };
-        }
-
         public static CustomerModel ToModel(this Customer source)
         {
             return new CustomerModel()
