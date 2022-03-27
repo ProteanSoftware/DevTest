@@ -1,5 +1,7 @@
+import { forEach } from '@angular-devkit/schematics';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { CustomerModel } from '../models/customer.model';
 import { CustomerService } from '../services/customer.service';
 
@@ -10,6 +12,7 @@ import { CustomerService } from '../services/customer.service';
 })
 export class CustomerComponent implements OnInit {
 
+  subs: Subscription[] | undefined;
   public customerTypes: string[] = [];
   public customers: CustomerModel[] = [];
   public newCustomer: CustomerModel = {
@@ -21,10 +24,11 @@ export class CustomerComponent implements OnInit {
   constructor(private customerService: CustomerService) { }
 
   ngOnInit(): void {
-    this.customerService.GetCustomers()
-      .subscribe(customers => this.customers = customers);
-    this.customerService.GetCustomerTypes()
-      .subscribe(customerTypes => this.customerTypes = customerTypes);
+    this.subs.push(this.customerService.GetCustomers()
+      .subscribe(customers => this.customers = customers));
+
+    this.subs.push(this.customerService.GetCustomerTypes()
+      .subscribe(customerTypes => this.customerTypes = customerTypes));
   }
 
   public createCustomer(form: NgForm): void {
@@ -32,9 +36,15 @@ export class CustomerComponent implements OnInit {
       alert('form is not valid');
     } else {
       this.customerService.CreateCustomer(this.newCustomer).then(() => {
-        this.customerService.GetCustomers().subscribe(jobs => this.customers = jobs);
+        this.subs.push(this.customerService.GetCustomers().subscribe(jobs => this.customers = jobs));
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => {
+      sub?.unsubscribe();
+    });
   }
 
 }
