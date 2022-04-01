@@ -1,8 +1,8 @@
 <h2>New customer form</h2>
 <form #customerForm="ngForm" (ngSubmit)="createCustomer(customerForm)">
   <label for="name">Name</label>
-  <input type="text" name="name" ngModel required #name="ngModel" [(ngModel)]="newCustomer.name" />
-  <small *ngIf="name.invalid">Please select a valid date</small>
+  <input type="text" name="name" ngModel required minlength="5" #name="ngModel" [(ngModel)]="newCustomer.name" />
+  <small *ngIf="name.invalid">Invalid customer name</small>
   <label for="type">Customer type</label>
   <select name="type" required #type="ngModel" ngModel placeholder="Please select" [(ngModel)]="newCustomer.type">
     <option [ngValue]="undefined" selected>Please select</option>
