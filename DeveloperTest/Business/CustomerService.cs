@@ -52,7 +52,7 @@ namespace DeveloperTest.Business
                 { 
                     CustomerId = customer.CustomerId,
                     Name = customer.Name,
-                    Type = customer.Type
+                    Type = customer.Type.ToString()
                 })
                 .ToArrayAsync();
         }

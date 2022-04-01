@@ -39,7 +39,12 @@ namespace DeveloperTest.Controllers
         {
             if (model.When.Date < DateTime.Now.Date)
             {
-                return BadRequest("Date cannot be in the past");
+                return BadRequest("Date cannot be in the past.");
+            }
+
+            if (model.CustomerId is null)
+            {
+                return BadRequest("Job must have a customer.");
             }
 
             var job = jobService.CreateJob(model);

@@ -1,5 +1,6 @@
 ﻿using DeveloperTest.Database.Models;
 using DeveloperTest.Models;
+using System;
 
 namespace DeveloperTest.Mappers
 {
@@ -11,7 +12,9 @@ namespace DeveloperTest.Mappers
             {
                 CustomerId = source.CustomerId,
                 Name = source.Name,
-                Type = source.Type,
+                Type = Enum.TryParse(source.Type, out CustomerType type) 
+                    ? type 
+                    : throw new ArgumentException("Invalid customer type. Cannot parse the customer type."),
             };
         }
 
@@ -21,7 +24,7 @@ namespace DeveloperTest.Mappers
             {
                 CustomerId = source.CustomerId,
                 Name = source.Name,
-                Type = source.Type
+                Type = source.Type.ToString()
             };
         }
     }
