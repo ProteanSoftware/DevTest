@@ -12,7 +12,7 @@ import { CustomerService } from '../services/customer.service';
 })
 export class CustomerComponent implements OnInit {
 
-  subs: Subscription[] = [];
+  private subs: Subscription[] = [];
   public customerTypes: string[] = [];
   public customers: CustomerModel[] = [];
   public newCustomer: CustomerModel = {
