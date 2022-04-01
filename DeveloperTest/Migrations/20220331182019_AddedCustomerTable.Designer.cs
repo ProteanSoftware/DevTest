@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeveloperTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220327080819_AddCustomersTable")]
-    partial class AddCustomersTable
+    [Migration("20220331182019_AddedCustomerTable")]
+    partial class AddedCustomerTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

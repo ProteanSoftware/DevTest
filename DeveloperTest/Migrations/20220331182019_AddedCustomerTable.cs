@@ -4,7 +4,7 @@
 
 namespace DeveloperTest.Migrations
 {
-    public partial class AddCustomersTable : Migration
+    public partial class AddedCustomerTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

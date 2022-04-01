@@ -16,21 +16,6 @@ namespace DeveloperTest.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Job>()
-                .HasKey(x => x.JobId);
-
-            modelBuilder.Entity<Job>()
-                .Property(x => x.JobId)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Job>()
-                .HasData(new Job
-                {
-                    JobId = 1,
-                    Engineer = "Test",
-                    When = new DateTime(2022, 2, 1, 12, 0, 0)
-                });
-
             modelBuilder.Entity<Customer>()
                 .HasKey(x => x.CustomerId);
 
@@ -44,6 +29,25 @@ namespace DeveloperTest.Database
                     CustomerId = 1,
                     Name = "TestCustomer",
                     Type = CustomerType.Small
+                });
+
+            modelBuilder.Entity<Job>()
+                .HasKey(x => x.JobId);
+
+            modelBuilder.Entity<Job>()
+                .Property(x => x.JobId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Job>()
+                .HasOne(j => j.Customer)
+                .WithMany(c => c.Jobs);
+
+            modelBuilder.Entity<Job>()
+                .HasData(new Job
+                {
+                    JobId = 1,
+                    Engineer = "Test",
+                    When = new DateTime(2022, 2, 1, 12, 0, 0)
                 });
 
             base.OnModelCreating(modelBuilder);
