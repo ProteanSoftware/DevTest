@@ -4,7 +4,7 @@
 TODO LIST
 
 1. Create a screen that allows a user to manage a list of Customers, the Customer should have a Name and a Type.
-   [] FE Name is required and must have a minimum length of 5 characters
+   [+] FE Name is required and must have a minimum length of 5 characters
    [+] BE Name is required and must have a minimum length of 5 characters
    [+] Type is required and should be a select box of either "Large" or "Small".
    [+] There should be a form to add a new customer (like on the jobs page).
