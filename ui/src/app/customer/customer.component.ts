@@ -12,7 +12,7 @@ import { CustomerService } from '../services/customer.service';
 })
 export class CustomerComponent implements OnInit {
 
-  subs: Subscription[] | undefined;
+  subs: Subscription[] = [];
   public customerTypes: string[] = [];
   public customers: CustomerModel[] = [];
   public newCustomer: CustomerModel = {
@@ -24,11 +24,13 @@ export class CustomerComponent implements OnInit {
   constructor(private customerService: CustomerService) { }
 
   ngOnInit(): void {
-    this.subs.push(this.customerService.GetCustomers()
-      .subscribe(customers => this.customers = customers));
+    const getCustomersSub = this.customerService.GetCustomers()
+      .subscribe(customers => this.customers = customers);
+    this.subs.push(getCustomersSub);
 
-    this.subs.push(this.customerService.GetCustomerTypes()
-      .subscribe(customerTypes => this.customerTypes = customerTypes));
+    const getCustomerTypeSub = this.customerService.GetCustomerTypes()
+      .subscribe(customerTypes => this.customerTypes = customerTypes);
+    this.subs.push(getCustomerTypeSub);
   }
 
   public createCustomer(form: NgForm): void {
