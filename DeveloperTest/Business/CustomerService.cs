@@ -5,6 +5,7 @@ using DeveloperTest.Mappers;
 using DeveloperTest.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,13 +40,13 @@ namespace DeveloperTest.Business
                 .ToModel();
         }
 
-        public async Task<CustomerModel> GetCustomerAsync(int id)
+        public async ValueTask<CustomerModel> GetCustomerAsync(int id)
         {
             var customer = await context.Customers.FindAsync(id);
             return customer?.ToModel();
         }
 
-        public async Task<CustomerModel[]> GetCustomersAsync()
+        public async ValueTask<IEnumerable<CustomerModel>> GetCustomersAsync()
         {
             return await context.Customers
                 .Select(customer => new CustomerModel
@@ -57,7 +58,7 @@ namespace DeveloperTest.Business
                 .ToArrayAsync();
         }
 
-        public string[] GetTypes()
+        public IEnumerable<string> GetTypes()
         {
             return typeof(CustomerType).GetEnumNames();
         }
