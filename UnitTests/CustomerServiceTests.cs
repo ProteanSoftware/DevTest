@@ -52,7 +52,7 @@ namespace UnitTests
         public IEnumerator<object[]> GetEnumerator()
         {
             yield return new object[] {
-                new BaseCustomerModel { Name = "customer 1", Type = CustomerTypeEnum.Small },
+                new BaseCustomerModel { Name = "customer 1", Type = 1 },
                 new Customer { Name = "customer 1", Type = CustomerTypeEnum.Small }
             };
         }
