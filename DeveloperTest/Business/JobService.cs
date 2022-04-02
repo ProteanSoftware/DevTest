@@ -30,7 +30,6 @@ namespace DeveloperTest.Business
 
         public JobModel GetJob(int jobId)
         {
-            var x = context.Jobs.Include(x => x.Customer).FirstOrDefault(x => x.JobId == jobId);
             return context.Jobs.Where(x => x.JobId == jobId).Select(x => new JobModel
             {
                 JobId = x.JobId,
@@ -51,7 +50,7 @@ namespace DeveloperTest.Business
             });
 
             context.SaveChanges();
-            var job = context.Jobs.Include(x => x.Customer).FirstOrDefault(x => x.JobId == addedJob.Entity.JobId);
+            var job = context.Jobs.Include(x => x.Customer).SingleOrDefault(x => x.JobId == addedJob.Entity.JobId);
 
             return new JobModel
             {

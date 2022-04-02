@@ -28,7 +28,7 @@ namespace DeveloperTest.Business
 
         public async Task<CustomerModel> GetCustomerAsync(int id, CancellationToken token)
         {
-            return mapper.Map<CustomerModel>(await context.Customers.Include(x => x.CustomerType).FirstOrDefaultAsync(x => x.Id == id, token));
+            return mapper.Map<CustomerModel>(await context.Customers.Include(x => x.CustomerType).SingleOrDefaultAsync(x => x.Id == id, token));
         }
 
         public async Task<CustomerModel> CreateCustomerAsync(BaseCustomerModel model, CancellationToken token)
@@ -37,13 +37,13 @@ namespace DeveloperTest.Business
 
             await context.SaveChangesAsync();
             
-            return mapper.Map<CustomerModel>(await context.Customers.Include(x => x.CustomerType).FirstOrDefaultAsync(x => x.Id == addedCustomer.Entity.Id, token));
+            return mapper.Map<CustomerModel>(await context.Customers.Include(x => x.CustomerType).SingleOrDefaultAsync(x => x.Id == addedCustomer.Entity.Id, token));
         }
 
         //Added for manual testing purposes
         public async Task<bool> DeleteCustomer(int id, CancellationToken token)
         {
-            var customerToDelete = await context.Customers.FirstOrDefaultAsync(x => x.Id == id, token);
+            var customerToDelete = await context.Customers.SingleOrDefaultAsync(x => x.Id == id, token);
             if (customerToDelete is null)
             {
                 return false;
