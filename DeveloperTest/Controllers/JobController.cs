@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Models;
 
@@ -37,14 +36,16 @@ namespace DeveloperTest.Controllers
         [HttpPost]
         public IActionResult Create(BaseJobModel model)
         {
-            if (model.When.Date < DateTime.Now.Date)
-            {
-                return BadRequest("Date cannot be in the past");
-            }
-
             var job = jobService.CreateJob(model);
 
-            return Created($"job/{job.JobId}", job);
+            if (job is null)
+                return BadRequest(new { error = "Unable to create job" });
+
+            return Created($"{GetBaseUrl}/job/{job.JobId}", job);
+        }
+        private string GetBaseUrl()
+        {
+            return $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
         }
     }
 }

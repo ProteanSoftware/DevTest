@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using DeveloperTest.Business;
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Database;
+using FluentValidation.AspNetCore;
 
 namespace DeveloperTest
 {
@@ -23,11 +24,16 @@ namespace DeveloperTest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IJobService, JobService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ICustomerTypeService, CustomerTypeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +42,12 @@ namespace DeveloperTest
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
             }
 
             app.UseHttpsRedirection();
