@@ -5,7 +5,12 @@
     <option [ngValue]="undefined" selected>Please select</option>
     <option *ngFor="let engineer of engineers">{{engineer}}</option>
   </select>
-  <small *ngIf="engineer.invalid">Please select an engineer</small>
+  <label for="customer">Customer</label>
+  <select name="customer" [ngModel]="selectedCustomer" #customer="ngModel" required placeholder="Please select" (ngModelChange)="onSelectCustomer($event)">
+    <option [ngValue]="undefined" selected>Please select</option>
+    <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
+  </select>
+  <small *ngIf="customer.invalid">Please select a customer</small>
   <label for="when">When</label>
   <input type="date" name="when" ngModel required #when="ngModel" [(ngModel)]="newJob.when" />
   <small *ngIf="when.invalid">Please select a valid date</small>
@@ -17,6 +22,7 @@
   <thead>
     <tr>
       <th>Engineer</th>
+      <th>Customer</th>
       <th>When</th>
       <th></th>
     </tr>
@@ -24,6 +30,7 @@
   <tbody>
     <tr *ngFor="let job of jobs">
       <td>{{job.engineer}}</td>
+      <td>{{job.customerName ? job.customerName : unknown}}</td>
       <td>{{job.when | date:'shortDate'}}</td>
       <td>
         <a [routerLink]="['/job', job.jobId]">Open</a>

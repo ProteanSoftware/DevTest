@@ -7,6 +7,7 @@ namespace DeveloperTest.Database
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -15,7 +16,20 @@ namespace DeveloperTest.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Customer>()
+                .HasKey(x => x.CustomerId);
+
+            modelBuilder.Entity<Customer>()
+                .Property(x => x.CustomerId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Customer>()
+                .HasData(new Customer
+                {
+                    CustomerId = 1,
+                    Name = "TestCustomer",
+                    Type = CustomerType.Small
+                });
 
             modelBuilder.Entity<Job>()
                 .HasKey(x => x.JobId);
@@ -25,12 +39,19 @@ namespace DeveloperTest.Database
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Job>()
+                .HasOne(j => j.Customer)
+                .WithMany(c => c.Jobs);
+
+            modelBuilder.Entity<Job>()
                 .HasData(new Job
                 {
                     JobId = 1,
                     Engineer = "Test",
                     When = new DateTime(2022, 2, 1, 12, 0, 0)
                 });
+
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }
