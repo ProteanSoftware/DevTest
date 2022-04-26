@@ -14,7 +14,7 @@ export class JobService {
     return this.httpClient.get<CustomerModel[]>('http://localhost:63235/customer');
   }
 
-  public GetCustomers(customerId: number): Observable<CustomerModel> {
+  public GetCustomer(customerId: number): Observable<CustomerModel> {
     return this.httpClient.get<CustomerModel>(`http://localhost:63235/job/${customerId}`);
   }
 

@@ -15,7 +15,7 @@ export class CustomerComponent implements OnInit {
 
   public customers: CustomerModel[] = [];
 
-  public newJob: CustomerModel = {
+  public newCustomer: CustomerModel = {
     customerId: null,
     type: null,
     name: null
@@ -26,8 +26,8 @@ export class CustomerComponent implements OnInit {
     private customerService: CustomerService) { }
 
   ngOnInit() {
-    this.engineerService.GetEngineers().subscribe(engineers => this.engineers = engineers);
-    this.jobService.GetJobs().subscribe(jobs => this.jobs = jobs);
+    this.typeService.GetTypes().subscribe(types => this.types = types);
+    this.customerService.GetCustomers().subscribe(customers => this.customers = customers);
   }
 
   public createCustomer(form: NgForm): void {
