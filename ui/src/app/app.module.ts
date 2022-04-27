@@ -9,6 +9,7 @@ import { JobComponent } from './job/job.component';
 import { CustomerComponent } from './customer/customer.component';
 import { HomeComponent } from './home/home.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
     JobComponent,
     CustomerComponent,
     HomeComponent,
-    JobDetailComponent
+    JobDetailComponent,
+    CustomerDetailComponent
   ],
   imports: [
     FormsModule,

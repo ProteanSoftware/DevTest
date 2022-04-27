@@ -4,6 +4,7 @@ import { JobComponent } from './job/job.component';
 import { CustomerComponent } from './customer/customer.component';
 import { HomeComponent } from './home/home.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'jobs', component: JobComponent },
   { path: 'customers', component: CustomerComponent },
-  { path: 'job/:id', component: JobDetailComponent }
+  { path: 'job/:id', component: JobDetailComponent },
+  { path: 'customer/:id', component: CustomerDetailComponent }
 ];
 
 @NgModule({
