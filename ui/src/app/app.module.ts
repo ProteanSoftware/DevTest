@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JobComponent } from './job/job.component';
+import { CustomerComponent } from './customer/customer.component';
 import { HomeComponent } from './home/home.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 
@@ -13,6 +14,7 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
   declarations: [
     AppComponent,
     JobComponent,
+    CustomerComponent,
     HomeComponent,
     JobDetailComponent
   ],

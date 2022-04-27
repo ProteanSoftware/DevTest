@@ -24,7 +24,7 @@ namespace DeveloperTest.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var customer = customerService.GetCustomers(id);
+            var customer = customerService.GetCustomer(id);
 
             if (customer == null)
             {
@@ -37,10 +37,10 @@ namespace DeveloperTest.Controllers
         [HttpPost]
         public IActionResult Create(BaseCustomerModel model)
         {
-            //if (model.When.Date < DateTime.Now.Date)
-            //{
-            //    return BadRequest("Date cannot be in the past");
-            //}
+            if (model.Name.Length < 5)
+            {
+                return BadRequest("Name must be at least 5.");
+            }
 
             var customer = customerService.CreateCustomer(model);
 

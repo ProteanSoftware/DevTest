@@ -8,8 +8,8 @@
   <small *ngIf="type.invalid">Please select a type</small>
   <label for="name">Name</label>
   <input type="text" name="name" ngModel required #name="ngModel" [(ngModel)]="newCustomer.name" />
-  <small *ngIf="when.invalid">Customer Name must be at least 5</small>
-  <button type="submit" [disabled]="jobForm.invalid">Add Customer</button>
+  <small *ngIf="name.invalid">Customer Name must be at least 5</small>
+  <button type="submit" [disabled]="customerForm.invalid">Add Customer</button>
 </form>
 
 <h2>Customers list</h2>
