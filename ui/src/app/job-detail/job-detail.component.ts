@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JobService } from '../services/job.service';
 import { JobModel } from '../models/job.model';
+import { CustomerType } from '../models/customer.model';
 
 @Component({
   selector: 'app-job-detail',
@@ -13,6 +14,7 @@ export class JobDetailComponent implements OnInit {
   private jobId: number;
 
   public job: JobModel;
+  CustomerType = CustomerType;
 
   constructor(
     private route: ActivatedRoute,
