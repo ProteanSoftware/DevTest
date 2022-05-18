@@ -34,6 +34,7 @@ namespace DeveloperTest.Database
                     When = new DateTime(2022, 2, 1, 12, 0, 0)
                 });
 
+
             //Customer
             modelBuilder.Entity<Customer>()
                 .HasKey(x => x.CustomerId);
