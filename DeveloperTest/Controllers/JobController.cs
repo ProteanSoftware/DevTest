@@ -37,6 +37,11 @@ namespace DeveloperTest.Controllers
         [HttpPost]
         public IActionResult Create(BaseJobModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (model.When.Date < DateTime.Now.Date)
             {
                 return BadRequest("Date cannot be in the past");

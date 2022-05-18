@@ -4,6 +4,7 @@ using DeveloperTest.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeveloperTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220518164245_CustomerTable")]
+    partial class CustomerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,9 +51,6 @@ namespace DeveloperTest.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JobId"), 1L, 1);
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Engineer")
                         .HasColumnType("nvarchar(max)");
 
@@ -59,8 +58,6 @@ namespace DeveloperTest.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("JobId");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Jobs");
 
@@ -71,15 +68,6 @@ namespace DeveloperTest.Migrations
                             Engineer = "Test",
                             When = new DateTime(2022, 2, 1, 12, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-                });
-
-            modelBuilder.Entity("DeveloperTest.Database.Models.Job", b =>
-                {
-                    b.HasOne("DeveloperTest.Database.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
-
-                    b.Navigation("Customer");
                 });
 #pragma warning restore 612, 618
         }
